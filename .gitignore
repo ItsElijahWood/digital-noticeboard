@@ -1,0 +1,4 @@
+/target
+.env
+congregation_noticeboard_database.db
+
