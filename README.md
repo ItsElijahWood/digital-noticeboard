@@ -1,6 +1,6 @@
 # 📌 Digital Notice Board
 
-A 4K-optimized digital notice board built in Rust with raw TCP sockets. Fast, lightweight, and completely free to use.
+A 4K digital notice board built in Rust with raw TCP sockets. 
 
 ---
 
