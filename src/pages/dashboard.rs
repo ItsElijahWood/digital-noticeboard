@@ -94,6 +94,11 @@ pub fn dashboard_page() -> String {
             <input type="file" accept="image/png" id="imgUploadSC" />
             <button type="button" onclick="uploadPngScotbyNoticeboard()">Upload PNG</button>
         </div>
+        <div style="padding-left: 2rem;">
+            <p style="color: #fff; font-size: 25px; font-family: 'Publicsans';">Shared Map</p>
+            <input type="file" accept="image/png" id="imgUploadSharedMap" />
+            <button type="button" onclick="uploadPngSharedMap()">Upload PNG</button>
+        </div>
     </body>
     <script>
         fetch('/api/protected', {
