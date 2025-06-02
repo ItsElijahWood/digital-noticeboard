@@ -48,10 +48,15 @@ pub fn index_page() -> String {
     </head>
     <body>
         <div class="header">Shared Noticeboard
-            <p style="border: 2px solid #fff; margin: 0; user-select: none; width: 120px; padding: 5px;">&nbsp;JW<br> .ORG</p>
+            <p style="border: 2px solid #fff; margin: 0; user-select: none; width: 120px; padding: 5px;">&nbsp;&nbsp;JW<br> .ORG</p>
+        </div>
+        <div id="docs_container" style="padding: 100px; display: flex; gap: 30px;">
+
         </div>
     </body>
     <script>
+        const container = document.getElementById("docs_container");
+
         fetch('/api/protected', {
             method: 'GET',
             credentials: 'include'
@@ -61,6 +66,32 @@ pub fn index_page() -> String {
             if (!response.ok) {
                 window.location.href='/login';
             }
+        });
+
+        fetch('/api/protected_img_fetch', {
+            method: 'GET',
+            credentials: 'include'
+        }).then(response => {
+            const data = response.json();
+        });
+
+        fetch('/api/fetch', {
+            method: 'POST',
+        })
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(row => {
+                const [file, type, congregation] = row;
+
+                if (type === "shared_notice_board") {
+                    const img = document.createElement("img");
+                    img.src = file;
+                    img.width = 500;
+                    img.height = 700;
+
+                    container.appendChild(img);
+                }
+            }); 
         });
     </script>
     </html>

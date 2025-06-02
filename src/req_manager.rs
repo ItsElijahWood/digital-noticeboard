@@ -4,9 +4,10 @@ use std::{
     net::TcpStream,
 };
 
+use crate::add_img::add_imgs;
 use crate::jwt::manage_req::jwt_req;
-use crate::add_pdf::add_pdfs;
 use crate::posts::manage_posts;
+use crate::fetch_imgs::fetch_pngs;
 
 /// req_manager is a function that allows certent files through network requests
 pub fn req_manager(mut stream: &TcpStream, req_status: &String, mut reader: BufReader<&TcpStream>) {
@@ -47,12 +48,20 @@ pub fn req_manager(mut stream: &TcpStream, req_status: &String, mut reader: BufR
     }
 
     // Handle login check
-    if req_status.starts_with("GET /api/protected") || req_status.starts_with("GET /api/protected_pdf_pass") {
+    if req_status.starts_with("GET /api/protected")
+        || req_status.starts_with("GET /api/protected_img_pass")
+        || req_status.starts_with("GET /api/protected_img_fetch")
+    {
         jwt_req(&stream, &mut reader, &req_status);
     }
 
-    // Handle adding pdf
-    if req_status.starts_with("POST /api/add_pdf") {
-        add_pdfs(&stream, &mut reader);
+    // Handle adding pngs to local storage for notice board
+    if req_status.starts_with("POST /api/add_img") {
+        add_imgs(&stream, &mut reader);
+    }
+
+    // Fetching all pngs for displaying on noticeboard
+    if req_status.starts_with("POST /api/fetch") {
+        fetch_pngs(&stream);
     }
 }

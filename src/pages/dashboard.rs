@@ -76,9 +76,8 @@ pub fn dashboard_page() -> String {
         <div class="header">Dashboard</div>
         <div style="padding-left: 2rem;">
             <p style="color: #fff; font-size: 25px; font-family: 'Publicsans';">Shared Noticeboad</p>
-            <input type="file" accept="application/pdf" id="pdfUpload" />
-            <input type="text" value="shared_notice_board" id="shared_notice_board" readonly />
-            <button type="button" onclick="uploadPdf()">Upload PDF</button>
+            <input type="file" accept="image/png" id="imgUpload" />
+            <button type="button" onclick="uploadPngSharedNoticeboard()">Upload PNG</button>
         </div>
     </body>
     <script>
@@ -93,8 +92,8 @@ pub fn dashboard_page() -> String {
             }
         });
 
-        function pdf_pass_token() {
-            fetch('/api/protected_pdf_pass', {
+        function png_pass_token() {
+            fetch('/api/protected_img_pass', {
                 method: 'GET',
                 credentials: 'include'
             }).then(response => {
@@ -106,28 +105,27 @@ pub fn dashboard_page() -> String {
             });
         }
 
-        function uploadPdf() {
-            const input = document.getElementById('pdfUpload');
-            const type = document.getElementById('shared_notice_board').value;
+        function uploadPngSharedNoticeboard() {
+            const input = document.getElementById('imgUpload');
 
             if (input.files.length === 0) {
-                alert('Select a PDF file first.');
+                alert('Select a PNG file first.');
                 return;
             }
             const file = input.files[0];
             
-            if (file.type !== 'application/pdf') {
-                alert('Only PDF files are allowed.');
+            if (file.type !== 'image/png') {
+                alert('Only PNG files are allowed.');
                 return;
             }
 
             const formData = new FormData();
-            formData.append('pdf', file);
-            formData.append('type', type);
+            formData.append('img', file);
+            formData.append('type', 'shared_notice_board');
 
-            pdf_pass_token();
+            png_pass_token();
 
-            fetch('/api/add_pdf', {
+            fetch('/api/add_img', {
                 method: "POST",
                 body: formData 
             })

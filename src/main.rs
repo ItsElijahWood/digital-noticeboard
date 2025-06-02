@@ -17,8 +17,9 @@ pub mod jwt {
     pub mod manage_req;
 }
 pub mod posts;
-pub mod add_pdf;
+pub mod add_img;
 pub mod req_manager;
+pub mod fetch_imgs;
 
 fn main() {
     // The port the website runs on

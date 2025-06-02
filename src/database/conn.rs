@@ -28,7 +28,7 @@ pub fn start_database() -> Result<()> {
         "
         CREATE TABLE IF NOT EXISTS storage (
             congregation VARCHAR,
-            pdf_name VARCHAR NOT NULL,
+            img_name VARCHAR NOT NULL,
             type VARCHAR NOT NULL
         )
         ",
