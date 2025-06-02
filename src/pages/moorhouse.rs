@@ -1,12 +1,12 @@
 /// Return HTML to content variable
-pub fn index_page() -> String {
+pub fn moorhouse_page() -> String {
    r#"
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Congregation Notice Board</title>
+        <title>Moorhouse Notice Board</title>
         <link rel="icon" type="image/png" href="public/favicon.png">
         <style>
             body {
@@ -47,7 +47,7 @@ pub fn index_page() -> String {
         </style>
     </head>
     <body>
-        <div class="header">&nbsp;&nbsp;Shared Noticeboard
+        <div class="header">&nbsp;&nbsp;Moorhouse Noticeboard
             <div style="border: 2px solid #fff; user-select: none; width: 260px; padding: 5px;">
                 <p style="margin: 0; font-size: 140px;">&nbsp;JW</p>
                 <p style="margin: 0; font-size: 85px; padding-bottom: 10px;">&nbsp;.ORG</p>
@@ -57,9 +57,7 @@ pub fn index_page() -> String {
         <div id="docs_container" style="padding: 100px; width: 90%; padding-top: 0 !important; display: flex; flex-wrap: wrap; gap: 40px; overflow-y: auto; height: 1600px; scrollbar-width: none;">
         </div>
         <div style="width: 300px; position: absolute; right: 0; display: flex; align-content: center; padding-right: 40px; text-align: center; gap: 40px; justify-content: center; flex-direction: column; height: 70%;">
-            <a style="color: #fff; font-size: 150px; background-color: #ABEBC6; display: flex; align-items: center; height: 275px; border: 2px solid #fff; cursor: pointer; justify-content: center; text-decoration: none;" href="/brampton">BC</a> 
-            <a style="color: #fff; font-size: 150px; background-color: #F9E79F; display: flex; align-items: center; height: 275px; border: 2px solid #fff; cursor: pointer; justify-content: center; text-decoration: none;" href="/moorhouse">MC</a> 
-            <a style="color: #fff; font-size: 150px; background-color: #D7BDE2; display: flex; align-items: center; height: 275px; border: 2px solid #fff; cursor: pointer; justify-content: center; text-decoration: none;" href="/scotby">SC</a> 
+            <a style="color: #fff; font-size: 100px; display: flex; align-items: center; height: 275px; border: 2px solid #fff; cursor: pointer; justify-content: center; text-decoration: none;" href="/">Back</a> 
             <img src="public/map_icon.png" style="border: 2px solid #fff; text-decoration: none; cursor: pointer; background-color: black;" width="300px" height="275px" />
         </div>
         </div>
@@ -93,7 +91,7 @@ pub fn index_page() -> String {
             data.forEach(row => {
                 const [file, type, congregation] = row;
 
-                if (type === "shared_notice_board") {
+                if (type === "moorhouse_notice_board") {
                     const img = document.createElement("img");
                     img.src = file;
                     img.width = 570;

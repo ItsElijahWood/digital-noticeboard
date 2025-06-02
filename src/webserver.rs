@@ -4,9 +4,12 @@ use std::{
     thread,
 };
 
-use crate::pages::index::index_page;
-use crate::pages::login::login_page;
 use crate::pages::dashboard::dashboard_page;
+use crate::pages::index::index_page;
+use crate::pages::moorhouse::moorhouse_page;
+use crate::pages::scotby::scotby_page;
+use crate::pages::login::login_page;
+use crate::pages::brampton::brampton_page;
 use crate::req_manager::req_manager;
 
 /// Starts listening for clients using TcpListener
@@ -57,6 +60,24 @@ fn stream_handler(mut stream: &TcpStream) {
         stream.write_all(req_body.as_bytes()).unwrap();
     } else if req_status.trim() == "GET /dashboard HTTP/1.1" {
         let content = dashboard_page();
+        let length = content.len();
+        let req_body = format!("HTTP/1.1 200 OK\r\nContent-Length: {length}\r\n\r\n{content}");
+
+        stream.write_all(req_body.as_bytes()).unwrap();
+    } else if req_status.trim() == "GET /brampton HTTP/1.1" {
+        let content = brampton_page();
+        let length = content.len();
+        let req_body = format!("HTTP/1.1 200 OK\r\nContent-Length: {length}\r\n\r\n{content}");
+
+        stream.write_all(req_body.as_bytes()).unwrap();
+    } else if req_status.trim() == "GET /moorhouse HTTP/1.1" {
+        let content = moorhouse_page();
+        let length = content.len();
+        let req_body = format!("HTTP/1.1 200 OK\r\nContent-Length: {length}\r\n\r\n{content}");
+
+        stream.write_all(req_body.as_bytes()).unwrap();
+    } else if req_status.trim() == "GET /scotby HTTP/1.1" {
+        let content = scotby_page();
         let length = content.len();
         let req_body = format!("HTTP/1.1 200 OK\r\nContent-Length: {length}\r\n\r\n{content}");
 

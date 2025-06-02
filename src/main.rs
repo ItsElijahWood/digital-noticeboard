@@ -8,6 +8,9 @@ pub mod pages {
     pub mod index;
     pub mod login;
     pub mod dashboard;
+    pub mod brampton;
+    pub mod moorhouse;
+    pub mod scotby;
 }
 pub mod database {
     pub mod conn;

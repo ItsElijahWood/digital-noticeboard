@@ -102,7 +102,7 @@ pub fn manage_posts(
                     }
 
                     let expire = SystemTime::now()
-                        .checked_add(Duration::from_secs(3 * 60 * 60))
+                        .checked_add(Duration::from_secs(30 * 24 * 60 * 60)) // 30 Days
                         .unwrap()
                         .duration_since(UNIX_EPOCH)
                         .unwrap()

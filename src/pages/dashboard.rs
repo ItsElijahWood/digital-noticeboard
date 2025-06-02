@@ -79,6 +79,21 @@ pub fn dashboard_page() -> String {
             <input type="file" accept="image/png" id="imgUpload" />
             <button type="button" onclick="uploadPngSharedNoticeboard()">Upload PNG</button>
         </div>
+        <div style="padding-left: 2rem;">
+            <p style="color: #fff; font-size: 25px; font-family: 'Publicsans';">Brampton Noticeboad</p>
+            <input type="file" accept="image/png" id="imgUploadBC" />
+            <button type="button" onclick="uploadPngBramptonNoticeboard()">Upload PNG</button>
+        </div>
+        <div style="padding-left: 2rem;">
+            <p style="color: #fff; font-size: 25px; font-family: 'Publicsans';">Moorhouse Noticeboad</p>
+            <input type="file" accept="image/png" id="imgUploadMC" />
+            <button type="button" onclick="uploadPngMoorhouseNoticeboard()">Upload PNG</button>
+        </div>
+        <div style="padding-left: 2rem;">
+            <p style="color: #fff; font-size: 25px; font-family: 'Publicsans';">Scotby Noticeboad</p>
+            <input type="file" accept="image/png" id="imgUploadSC" />
+            <button type="button" onclick="uploadPngScotbyNoticeboard()">Upload PNG</button>
+        </div>
     </body>
     <script>
         fetch('/api/protected', {
@@ -134,6 +149,118 @@ pub fn dashboard_page() -> String {
                     throw new Error('Upload failed');
                 }
                 alert('Upload successful!');
+                window.location.href = '/dashboard';
+            })
+            .catch(error => {
+                alert('Error uploading file.');
+                console.error(error);
+            }); 
+        }
+
+        function uploadPngBramptonNoticeboard() {
+            const input = document.getElementById('imgUploadBC');
+
+            if (input.files.length === 0) {
+                alert('Select a PNG file first.');
+                return;
+            }
+            const file = input.files[0];
+            
+            if (file.type !== 'image/png') {
+                alert('Only PNG files are allowed.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('img', file);
+            formData.append('type', 'brampton_notice_board');
+
+            png_pass_token();
+
+            fetch('/api/add_img', {
+                method: "POST",
+                body: formData 
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+                alert('Upload successful!');
+                window.location.href = '/dashboard';
+            })
+            .catch(error => {
+                alert('Error uploading file.');
+                console.error(error);
+            }); 
+        }
+
+        function uploadPngMoorhouseNoticeboard() {
+            const input = document.getElementById('imgUploadMC');
+
+            if (input.files.length === 0) {
+                alert('Select a PNG file first.');
+                return;
+            }
+            const file = input.files[0];
+            
+            if (file.type !== 'image/png') {
+                alert('Only PNG files are allowed.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('img', file);
+            formData.append('type', 'moorhouse_notice_board');
+
+            png_pass_token();
+
+            fetch('/api/add_img', {
+                method: "POST",
+                body: formData 
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+                alert('Upload successful!');
+                window.location.href = '/dashboard';
+            })
+            .catch(error => {
+                alert('Error uploading file.');
+                console.error(error);
+            }); 
+        }
+
+        function uploadPngScotbyNoticeboard() {
+            const input = document.getElementById('imgUploadSC');
+
+            if (input.files.length === 0) {
+                alert('Select a PNG file first.');
+                return;
+            }
+            const file = input.files[0];
+            
+            if (file.type !== 'image/png') {
+                alert('Only PNG files are allowed.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('img', file);
+            formData.append('type', 'scotby_notice_board');
+
+            png_pass_token();
+
+            fetch('/api/add_img', {
+                method: "POST",
+                body: formData 
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+                alert('Upload successful!');
+                window.location.href = '/dashboard';
             })
             .catch(error => {
                 alert('Error uploading file.');

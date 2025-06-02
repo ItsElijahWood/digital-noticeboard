@@ -35,12 +35,12 @@ pub fn fetch_pngs(mut stream: &TcpStream) {
     let congregation = match congregation_res {
         Ok(c) => c,
         Err(e) => {
-            eprintln!("DB query error for congregation: {:?}", e);
+            eprintln!("Make sure db loads before making req to backend incase its not this here is the error: {:?}", e);
             return;
         }
     };
 
-    let mut stmt2 = match conn.prepare("SELECT img_name, type FROM storage WHERE congregation = ?")
+    let mut stmt2 = match conn.prepare("SELECT img_name, type FROM storage")
     {
         Ok(stmt) => stmt,
         Err(e) => {
@@ -49,7 +49,7 @@ pub fn fetch_pngs(mut stream: &TcpStream) {
         }
     };
 
-    let query = match stmt2.query_map([&congregation], |row| {
+    let query = match stmt2.query_map([], |row| {
         Ok((
             row.get::<_, String>(0)
                 .expect("Failed to get img_name from database"),
