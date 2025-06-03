@@ -7,6 +7,9 @@ use std::{
 use crate::pages::dashboard::dashboard_page;
 use crate::pages::index::index_page;
 use crate::pages::shared_map::shared_map_page;
+use crate::pages::brampton_map::brampton_map_page;
+use crate::pages::moorhouse_map::moorhouse_map_page;
+use crate::pages::scotby_map::scotby_map_page;
 use crate::pages::moorhouse::moorhouse_page;
 use crate::pages::scotby::scotby_page;
 use crate::pages::login::login_page;
@@ -85,6 +88,24 @@ fn stream_handler(mut stream: &TcpStream) {
         stream.write_all(req_body.as_bytes()).unwrap();
     } else if req_status.trim() == "GET /shared_map HTTP/1.1" {
         let content = shared_map_page();
+        let length = content.len();
+        let req_body = format!("HTTP/1.1 200 OK\r\nContent-Length: {length}\r\n\r\n{content}");
+
+        stream.write_all(req_body.as_bytes()).unwrap();
+    } else if req_status.trim() == "GET /brampton_map HTTP/1.1" {
+        let content = brampton_map_page();
+        let length = content.len();
+        let req_body = format!("HTTP/1.1 200 OK\r\nContent-Length: {length}\r\n\r\n{content}");
+
+        stream.write_all(req_body.as_bytes()).unwrap();
+    } else if req_status.trim() == "GET /scotby_map HTTP/1.1" {
+        let content = scotby_map_page();
+        let length = content.len();
+        let req_body = format!("HTTP/1.1 200 OK\r\nContent-Length: {length}\r\n\r\n{content}");
+
+        stream.write_all(req_body.as_bytes()).unwrap();
+    } else if req_status.trim() == "GET /moorhouse_map HTTP/1.1" {
+        let content = moorhouse_map_page();
         let length = content.len();
         let req_body = format!("HTTP/1.1 200 OK\r\nContent-Length: {length}\r\n\r\n{content}");
 

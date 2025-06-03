@@ -58,7 +58,7 @@ pub fn moorhouse_page() -> String {
         </div>
         <div style="width: 300px; position: absolute; right: 0; display: flex; align-content: center; padding-right: 40px; text-align: center; gap: 40px; justify-content: center; flex-direction: column; height: 70%;">
             <a style="color: #fff; font-size: 100px; display: flex; align-items: center; height: 275px; border: 2px solid #fff; cursor: pointer; justify-content: center; text-decoration: none;" href="/">Back</a> 
-            <img src="public/map_icon.png" style="border: 2px solid #fff; text-decoration: none; cursor: pointer; background-color: black;" width="300px" height="275px" />
+            <img src="public/map_icon.png" style="border: 2px solid #fff; text-decoration: none; cursor: pointer; background-color: black;" width="300px" height="275px" onclick="window.location.href='/moorhouse_map'" />
         </div>
         </div>
     </body>
@@ -83,24 +83,62 @@ pub fn moorhouse_page() -> String {
             const data = response.json();
         });
 
-        fetch('/api/fetch', {
-            method: 'POST',
-        })
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(row => {
-                const [file, type, congregation] = row;
+       const previewDiv = document.createElement("div");
+previewDiv.id = "imagePreview";
+previewDiv.style.position = "fixed";
+previewDiv.style.top = "50%";
+previewDiv.style.left = "50%";
+previewDiv.style.transform = "translate(-50%, -50%)";
+previewDiv.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+previewDiv.style.padding = "20px";
+previewDiv.style.borderRadius = "10px";
+previewDiv.style.display = "none";
+previewDiv.style.zIndex = "9999";
 
-                if (type === "moorhouse_notice_board") {
-                    const img = document.createElement("img");
-                    img.src = file;
-                    img.width = 570;
-                    img.height = 800;
+const previewImg = document.createElement("img");
+previewImg.style.maxWidth = "90vw";
+previewImg.style.maxHeight = "90vh";
+previewImg.style.borderRadius = "8px";
 
-                    container.appendChild(img);
-                }
+previewDiv.appendChild(previewImg);
+document.body.appendChild(previewDiv);
+
+previewDiv.addEventListener("click", () => {
+    previewDiv.style.display = "none";
+});
+
+fetch('/api/fetch', {
+    method: 'POST',
+})
+.then(response => response.json())
+.then(data => {
+    let num = 0;
+
+    data.forEach(row => {
+        const [file, type, congregation] = row;
+
+        if (type === "moorhouse_notice_board") {
+            const container = document.getElementById("docs_container");
+            num += 1;
+
+            const img = document.createElement("img");
+            img.src = file;
+            img.width = 570;
+            img.height = 800;
+            img.style.cursor = "pointer";
+
+            img.onclick = () => {
+                previewImg.src = file;
+                previewDiv.style.display = "block";
+            };
+
+            container.appendChild(img);
+        }
             }); 
-        });
+        })
+        .catch(error => {
+            console.error("Fetch error:", error);
+        }); 
     </script>
     </html>
    "#.to_string() 

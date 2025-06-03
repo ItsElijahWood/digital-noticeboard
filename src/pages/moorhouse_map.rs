@@ -1,12 +1,12 @@
 /// Return HTML to content variable
-pub fn shared_map_page() -> String {
+pub fn moorhouse_map_page() -> String {
    r#"
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Shared Territory Map</title>
+        <title>Moorhouse Territory Map</title>
         <link rel="icon" type="image/png" href="public/favicon.png">
         <style>
             body {
@@ -47,7 +47,7 @@ pub fn shared_map_page() -> String {
         </style>
     </head>
     <body>
-        <div class="header">&nbsp;&nbsp;Shared Territory Map
+        <div class="header">&nbsp;&nbsp;Moorhouse Territory Map
             <div style="border: 2px solid #fff; user-select: none; width: 260px; padding: 5px;">
                 <p style="margin: 0; font-size: 140px;">&nbsp;JW</p>
                 <p style="margin: 0; font-size: 85px; padding-bottom: 10px;">&nbsp;.ORG</p>
@@ -55,10 +55,10 @@ pub fn shared_map_page() -> String {
         </div>
         <div style="display: flex;">
         <div id="docs_container" style="padding: 100px; width: 90%; padding-top: 0 !important; display: flex; flex-wrap: wrap; gap: 40px; overflow-y: auto; height: 1600px; scrollbar-width: none;">
-            <!-- <img src="public/storage/dummy_map.png" width="90%" /> -->
+            <!-- <img src="public/storage/moorhouse/dummy_map.png" width="90%" /> -->
         </div>
         <div style="width: 300px; position: absolute; right: 0; display: flex; align-content: center; padding-right: 40px; text-align: center; gap: 40px; justify-content: center; flex-direction: column; height: 70%;">
-            <a style="color: #fff; font-size: 100px; display: flex; align-items: center; height: 275px; border: 2px solid #fff; cursor: pointer; justify-content: center; text-decoration: none;" href="/">Back</a> 
+         <a style="color: #fff; font-size: 100px; display: flex; align-items: center; height: 275px; border: 2px solid #fff; cursor: pointer; justify-content: center; text-decoration: none;" href="/moorhouse">Back</a> 
         </div>
     </div>
     </body>

@@ -12,6 +12,9 @@ pub mod pages {
     pub mod moorhouse;
     pub mod scotby;
     pub mod shared_map;
+    pub mod brampton_map;
+    pub mod moorhouse_map;
+    pub mod scotby_map;
 }
 pub mod database {
     pub mod conn;

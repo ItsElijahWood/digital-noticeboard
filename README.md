@@ -9,7 +9,7 @@ A 4K digital notice board built in Rust with raw TCP sockets.
 - Built with native `std::net::TcpStream`
 - JWT-based authentication
 - Optimized for 4K screen resolution
-- No external dependencies
+- No external frameworks
 
 ---
 
@@ -23,5 +23,14 @@ A 4K digital notice board built in Rust with raw TCP sockets.
 | **License**      | MIT                            |
 | **Target**       | 4K Displays Only               |
 
+## Commands to run from root dir
+
+```bash
+mkdir db
+mkdir public/storage
+mkdir public/storage/scotby
+mkdir public/storage/brampton
+mkdir public/storage/moorhouse
+```
 ---
 
