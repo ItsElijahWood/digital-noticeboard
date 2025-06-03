@@ -1,5 +1,5 @@
 [package]
-name = "congregation_notice_board"
+name = "notice_board"
 version = "0.1.0"
 edition = "2024"
 

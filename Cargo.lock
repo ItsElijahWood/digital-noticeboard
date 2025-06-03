@@ -175,20 +175,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "congregation_notice_board"
-version = "0.1.0"
-dependencies = [
- "bcrypt",
- "dotenv",
- "jsonwebtoken",
- "multipart",
- "once_cell",
- "rusqlite",
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "core-foundation-sys"
 version = "0.8.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -595,6 +581,20 @@ dependencies = [
  "time 0.1.45",
  "typemap",
  "url",
+]
+
+[[package]]
+name = "notice_board"
+version = "0.1.0"
+dependencies = [
+ "bcrypt",
+ "dotenv",
+ "jsonwebtoken",
+ "multipart",
+ "once_cell",
+ "rusqlite",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
