@@ -66,8 +66,8 @@ pub fn scotby_map_page() -> String {
         fetch('/api/protected', {
             method: 'GET',
             credentials: 'include'
-        }).then(response => {
-            const data = response.json();
+        }).then(async response => {
+            const data = await response.json();
             
             if (!response.ok) {
                 window.location.href='/login';

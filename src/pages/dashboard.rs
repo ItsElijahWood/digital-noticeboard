@@ -104,8 +104,8 @@ pub fn dashboard_page() -> String {
         fetch('/api/protected', {
             method: 'GET',
             credentials: 'include'
-        }).then(response => {
-            const data = response.json();
+        }).then(async response => {
+            const data = await response.json();
             
             if (!response.ok) {
                 window.location.href='/login';
@@ -116,8 +116,8 @@ pub fn dashboard_page() -> String {
             fetch('/api/protected_img_pass', {
                 method: 'GET',
                 credentials: 'include'
-            }).then(response => {
-                const data = response.json();
+            }).then(async response => {
+                const data = await response.json();
             
                 if (!response.ok) {
                     window.location.href='/login';

@@ -68,8 +68,8 @@ pub fn scotby_page() -> String {
         fetch('/api/protected', {
             method: 'GET',
             credentials: 'include'
-        }).then(response => {
-            const data = response.json();
+        }).then(async response => {
+            const data = await response.json();
             
             if (!response.ok) {
                 window.location.href='/login';
@@ -79,8 +79,8 @@ pub fn scotby_page() -> String {
         fetch('/api/protected_img_fetch', {
             method: 'GET',
             credentials: 'include'
-        }).then(response => {
-            const data = response.json();
+        }).then(async response => {
+            const data = await response.json();
         });
 
        const previewDiv = document.createElement("div");
@@ -110,7 +110,7 @@ previewDiv.addEventListener("click", () => {
 fetch('/api/fetch', {
     method: 'POST',
 })
-.then(response => response.json())
+.then(async response => await response.json())
 .then(data => {
     let num = 0;
 
