@@ -1,6 +1,6 @@
 use once_cell::sync::Lazy;
-use std::{io::Write, net::TcpStream, sync::Mutex};
 use serde_json::to_string;
+use std::{io::Write, net::TcpStream, sync::Mutex};
 
 use crate::database::conn::conn_to_database;
 
@@ -19,29 +19,37 @@ pub fn fetch_pngs(mut stream: &TcpStream) {
     let conn = conn_to_database().unwrap();
 
     let id = match USER_ID.lock() {
-        Ok(guard) => guard,
+        Ok(guard) => guard.clone(),
         Err(poisoned) => {
             eprintln!("USER_ID mutex poisoned");
-            poisoned.into_inner()
+            poisoned.into_inner().clone()
         }
     };
 
-    let congregation_res: Result<String, _> = conn.query_row(
-        "SELECT congregation FROM users WHERE id = ?",
-        [&*id],
-        |row| row.get(0),
-    );
+    let congregation_res: Result<String, _> = conn
+        .query_row(
+            "SELECT congregation FROM users WHERE id = ?",
+            [&id],
+            |row| row.get(0),
+        )
+        .map_err(|e| {
+            eprintln!("No user found with ID '{}'. Error: {:?}", id, e);
+            e
+        });
 
     let congregation = match congregation_res {
         Ok(c) => c,
         Err(e) => {
-            eprintln!("Make sure db loads before making req to backend incase its not this here is the error: {:?}", e);
+            eprintln!(
+                "error retrieving rows from database for id: '{}': {:?}",
+                id,
+                e
+            );
             return;
         }
     };
 
-    let mut stmt2 = match conn.prepare("SELECT img_name, type FROM storage")
-    {
+    let mut stmt2 = match conn.prepare("SELECT img_name, type FROM storage") {
         Ok(stmt) => stmt,
         Err(e) => {
             eprintln!("Failed to prepare statement: {:?}", e);

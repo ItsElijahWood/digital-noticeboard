@@ -76,13 +76,6 @@ pub fn index_page() -> String {
             }
         });
 
-        fetch('/api/protected_img_fetch', {
-            method: 'GET',
-            credentials: 'include'
-        }).then(async response => {
-            const data = await response.json();
-        });
-
 const previewDiv = document.createElement("div");
 previewDiv.id = "imagePreview";
 previewDiv.style.position = "fixed";
@@ -106,9 +99,16 @@ document.body.appendChild(previewDiv);
 previewDiv.addEventListener("click", () => {
     previewDiv.style.display = "none";
 });
+fetch('/api/protected_img_fetch', {
+    method: 'GET',
+    credentials: 'include'
+})
+.then(async response => {
+    const data = await response.json();
 
-fetch('/api/fetch', {
-    method: 'POST',
+    return fetch('/api/fetch', {
+        method: 'POST',
+    });
 })
 .then(async response => await response.json())
 .then(data => {
@@ -134,11 +134,11 @@ fetch('/api/fetch', {
 
             container.appendChild(img);
         }
-            }); 
-        })
-        .catch(error => {
-            console.error("Fetch error:", error);
-        }); 
+    });
+})
+.catch(error => {
+    console.error("Fetch error:", error);
+});
     </script>
     </html>
    "#.to_string() 

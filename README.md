@@ -26,6 +26,7 @@ A 4K digital notice board built in Rust with raw TCP sockets.
 ## Commands to run from root dir
 
 ```bash
+touch .env
 mkdir db
 mkdir public/storage
 mkdir public/storage/scotby
