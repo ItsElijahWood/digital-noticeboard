@@ -4,10 +4,8 @@ use std::{
     net::TcpStream,
 };
 
-use crate::add_img::add_imgs;
 use crate::jwt::manage_req::jwt_req;
 use crate::posts::manage_posts;
-use crate::fetch_imgs::fetch_pngs;
 
 /// req_manager is a function that allows certent files through network requests
 pub fn req_manager(mut stream: &TcpStream, req_status: &String, mut reader: BufReader<&TcpStream>) {
@@ -22,7 +20,7 @@ pub fn req_manager(mut stream: &TcpStream, req_status: &String, mut reader: BufR
         let content = fs::read(&path).unwrap();
         let length = content.len();
         let req_body =
-            format!("{status}\r\nContent-Type: font/ttf\r\nContent-Length: {length}\r\n\r\n");
+            format!("{status}\r\nContent-Type: font/ttf\r\nAccess-Control-Allow-Origin: *\r\nContent-Length: {length}\r\n\r\n");
 
         stream.write_all(req_body.as_bytes()).unwrap();
         return stream.write_all(&content).unwrap();
@@ -47,21 +45,25 @@ pub fn req_manager(mut stream: &TcpStream, req_status: &String, mut reader: BufR
         manage_posts(&req_status, &mut reader, &stream);
     }
 
-    // Handle login check
+    // Check if logged in
     if req_status.starts_with("GET /api/protected")
-        || req_status.starts_with("GET /api/protected_img_pass")
-        || req_status.starts_with("GET /api/protected_img_fetch")
     {
         jwt_req(&stream, &mut reader, &req_status);
     }
 
     // Handle adding pngs to local storage for notice board
     if req_status.starts_with("POST /api/add_img") {
-        add_imgs(&stream, &mut reader);
+        jwt_req(&stream, &mut reader, &req_status);
     }
 
     // Fetching all pngs for displaying on noticeboard
-    if req_status.starts_with("POST /api/fetch") {
-        fetch_pngs(&stream);
+    if req_status.starts_with("GET /api/protected_img_fetch") {
+        jwt_req(&stream, &mut reader, &req_status);
+    }
+
+    // Fetch congregation from id from token
+    if req_status.starts_with("POST /api/fetch_dashboard_congregation")
+    {
+        jwt_req(&stream, &mut reader, &req_status);
     }
 }

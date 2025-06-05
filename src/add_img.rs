@@ -1,8 +1,6 @@
-use multipart::server::Multipart;
-use once_cell::sync::Lazy;
+se multipart::server::Multipart;
 use rusqlite::params;
 use std::collections::HashMap;
-use std::sync::Mutex;
 use std::{
     fs::File,
     io::{BufRead, BufReader, Read, Write},
@@ -13,35 +11,33 @@ use crate::database::conn::conn_to_database;
 
 /// Extract boundary from content-type header
 fn extract_boundary(content_type: &str) -> Option<String> {
+    println!("Extracting boundary from Content-Type: '{}'", content_type);
     content_type.split(';').map(|s| s.trim()).find_map(|param| {
         if param.starts_with("boundary=") {
-            Some(param["boundary=".len()..].trim_matches('"').to_string())
+            let b = param["boundary=".len()..].trim_matches('"').to_string();
+            println!("Found boundary: '{}'", b);
+            Some(b)
         } else {
             None
         }
     })
 }
 
-static USER_ID: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
-
-pub fn get_id(id: &str) {
-    let mut user_id = USER_ID.lock().unwrap();
-    *user_id = id.to_string();
-}
-
-// Save file to local storage and update DB
-fn to_local_storage(file_vec: &[u8], typevalue: &str) -> Result<(), Box<dyn std::error::Error>> {
+/// Save file to local storage and update DB
+fn to_local_storage(
+    file_vec: &[u8],
+    typevalue: &str,
+    user_id: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
     let conn = conn_to_database()?;
-    let user_id = USER_ID.lock().unwrap();
 
     let mut stmt = conn.prepare("SELECT congregation FROM users WHERE id = ?")?;
-    let congregation: String = stmt.query_row(params![&*user_id], |row| row.get(0))?;
+    let congregation: String = stmt.query_row(params![&user_id], |row| row.get(0))?;
 
     let mut stmt = conn.prepare("SELECT img_name FROM storage WHERE congregation = ?")?;
     let imgs = stmt.query_map([&congregation], |row| row.get::<_, String>(0))?;
 
     let mut num = 0;
-
     for _ in imgs {
         num += 1;
     }
@@ -63,36 +59,13 @@ fn to_local_storage(file_vec: &[u8], typevalue: &str) -> Result<(), Box<dyn std:
 }
 
 /// Adds images to device storage from multipart data
-pub fn add_imgs(mut stream: &TcpStream, reader: &mut BufReader<&TcpStream>) {
-    let mut content_type = String::new();
-    let mut content_length = 0;
-    let mut line = String::new();
-
-    // Read HTTP headers
-    loop {
-        line.clear();
-        if reader.read_line(&mut line).unwrap_or(0) == 0 {
-            println!("Failed to read line or connection closed.");
-            return;
-        }
-
-        if line == "\r\n" {
-            break;
-        }
-
-        if line.to_lowercase().starts_with("content-type:") {
-            if let Some(idx) = line.find(':') {
-                content_type = line[(idx + 1)..].trim().to_string();
-            }
-        }
-
-        if line.to_lowercase().starts_with("content-length:") {
-            if let Some(idx) = line.find(':') {
-                content_length = line[(idx + 1)..].trim().parse::<usize>().unwrap_or(0);
-            }
-        }
-    }
-
+pub fn add_imgs(
+    mut stream: &TcpStream,
+    reader: &mut BufReader<&TcpStream>,
+    id: &str,
+    content_type: &str,
+    content_length: usize
+) {
     let boundary = match extract_boundary(&content_type) {
         Some(b) => b,
         None => {
@@ -143,7 +116,7 @@ pub fn add_imgs(mut stream: &TcpStream, reader: &mut BufReader<&TcpStream>) {
         }
     };
 
-    if let Err(e) = to_local_storage(file_bytes, &type_value) {
+    if let Err(e) = to_local_storage(file_bytes, &type_value, &id) {
         eprintln!("Error sending file data to local storage: {}", e);
         return;
     }

@@ -1,50 +1,22 @@
-use once_cell::sync::Lazy;
 use serde_json::to_string;
-use std::{io::Write, net::TcpStream, sync::Mutex};
+use std::{io::Write, net::TcpStream};
 
 use crate::database::conn::conn_to_database;
 
-static USER_ID: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
-
-pub fn get_id_(id: &str) {
-    if let Ok(mut user_id) = USER_ID.lock() {
-        *user_id = id.to_string();
-    } else {
-        eprintln!("Warning: USER_ID mutex poisoned while setting id");
-    }
-}
-
 // Fetch png paths and types from database
-pub fn fetch_pngs(mut stream: &TcpStream) {
+pub fn fetch_pngs(mut stream: &TcpStream, id: &str) {
     let conn = conn_to_database().unwrap();
 
-    let id = match USER_ID.lock() {
-        Ok(guard) => guard.clone(),
-        Err(poisoned) => {
-            eprintln!("USER_ID mutex poisoned");
-            poisoned.into_inner().clone()
-        }
-    };
-
-    let congregation_res: Result<String, _> = conn
-        .query_row(
-            "SELECT congregation FROM users WHERE id = ?",
-            [&id],
-            |row| row.get(0),
-        )
-        .map_err(|e| {
-            eprintln!("No user found with ID '{}'. Error: {:?}", id, e);
-            e
-        });
+    let congregation_res: Result<String, _> = conn.query_row(
+        "SELECT congregation FROM users WHERE id = ?",
+        [&id],
+        |row| row.get(0),
+    );
 
     let congregation = match congregation_res {
         Ok(c) => c,
         Err(e) => {
-            eprintln!(
-                "error retrieving rows from database for id: '{}': {:?}",
-                id,
-                e
-            );
+            eprintln!("Failed to unwrap congregation from congregation_res: {}", e);
             return;
         }
     };

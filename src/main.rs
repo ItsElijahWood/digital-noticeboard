@@ -27,6 +27,7 @@ pub mod posts;
 pub mod add_img;
 pub mod req_manager;
 pub mod fetch_imgs;
+pub mod fetch_congregation;
 
 fn main() {
     // The port the website runs on

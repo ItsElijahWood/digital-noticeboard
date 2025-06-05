@@ -10,13 +10,8 @@ pub fn dashboard_page() -> String {
         <style>
             body {
                 margin: 0;
-                font-family: "Publicsans";
+                font-family: 'Arial', sans-serif;
                 background-color: #4a6da7;
-            }
-
-            @font-face {
-                font-family: "Publicsans";
-                src: url(public/public-sans.ttf);
             }
 
             .header {
@@ -74,27 +69,12 @@ pub fn dashboard_page() -> String {
     </head>
     <body>
         <div class="header">Dashboard</div>
-        <p style="padding-left: 2rem; color: #fff; font-size: 40px; font-family: 'Publicsans';">Upload files</p>
-       <div style="display: flex; flex-wrap: wrap;">
+        <p style="padding-left: 2rem; color: #fff; font-size: 40px; font-family: 'Arial', sans-serif;">Upload files</p>
+       <div id="container_upload" style="display: flex; flex-wrap: wrap;">
         <div style="padding-left: 2rem;">
-            <p style="color: #fff; font-size: 25px; font-family: 'Publicsans';">Shared Noticeboad</p>
+            <p style="color: #fff; font-size: 25px; font-family: 'Arial', sans-serif;">Shared Noticeboad</p>
             <input type="file" accept="image/png" id="imgUpload" />
             <button type="button" onclick="uploadPngSharedNoticeboard()">Upload PNG</button>
-        </div>
-        <div style="padding-left: 2rem;">
-            <p style="color: #fff; font-size: 25px; font-family: 'Publicsans';">Brampton Noticeboad</p>
-            <input type="file" accept="image/png" id="imgUploadBC" />
-            <button type="button" onclick="uploadPngBramptonNoticeboard()">Upload PNG</button>
-        </div>
-        <div style="padding-left: 2rem;">
-            <p style="color: #fff; font-size: 25px; font-family: 'Publicsans';">Moorhouse Noticeboad</p>
-            <input type="file" accept="image/png" id="imgUploadMC" />
-            <button type="button" onclick="uploadPngMoorhouseNoticeboard()">Upload PNG</button>
-        </div>
-        <div style="padding-left: 2rem;">
-            <p style="color: #fff; font-size: 25px; font-family: 'Publicsans';">Scotby Noticeboad</p>
-            <input type="file" accept="image/png" id="imgUploadSC" />
-            <button type="button" onclick="uploadPngScotbyNoticeboard()">Upload PNG</button>
         </div>
       </div> 
     </body>
@@ -110,18 +90,117 @@ pub fn dashboard_page() -> String {
             }
         });
 
-        function png_pass_token() {
-            fetch('/api/protected_img_pass', {
-                method: 'GET',
-                credentials: 'include'
-            }).then(async response => {
-                const data = await response.json();
-            
-                if (!response.ok) {
-                    window.location.href='/login';
-                }
-            });
+        fetch('/api/fetch_dashboard_congregation', {
+    method: 'POST',
+    credentials: 'include' 
+}).then(async response => await response.json())
+.then(data => {
+    if (data === "scotby") {
+        const container = document.getElementById("container_upload");
+
+        // Check if it's already added
+        if (!document.getElementById("scotbyUploadDiv")) {
+            const scotbyDiv = document.createElement("div");
+            scotbyDiv.id = "scotbyUploadDiv";
+            scotbyDiv.style.paddingLeft = "2rem";
+
+            const paragraph = document.createElement("p");
+            paragraph.textContent = "Scotby Noticeboad";
+            paragraph.style.color = '#fff';
+            paragraph.style.fontSize = "25px";
+            paragraph.style.fontFamily = "'Arial', sans-serif";
+
+            const fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.accept = "image/png";
+            fileInput.id = "imgUploadSC";
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.textContent = "Upload PNG";
+            button.onclick = function() {
+                uploadPngScotbyNoticeboard();
+            };
+
+            scotbyDiv.appendChild(paragraph);
+            scotbyDiv.appendChild(fileInput);
+            scotbyDiv.appendChild(button);
+
+            container.appendChild(scotbyDiv);
         }
+    } else {
+        console.error(`error check failed: ${data}`);
+    }
+
+    if (data === "brampton") {
+        const container = document.getElementById("container_upload");
+
+if (!document.getElementById("bramptonUploadDiv")) {
+    const bramptonDiv = document.createElement("div");
+    bramptonDiv.id = "bramptonUploadDiv";
+    bramptonDiv.style.paddingLeft = "2rem";
+
+    const paragraph = document.createElement("p");
+    paragraph.textContent = "Brampton Noticeboad";
+    paragraph.style.color = '#fff';
+    paragraph.style.fontSize = "25px";
+    paragraph.style.fontFamily = "'Arial', sans-serif";
+
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/png";
+    fileInput.id = "imgUploadBC";
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = "Upload PNG";
+    button.onclick = function() {
+        uploadPngBramptonNoticeboard();
+    };
+
+    bramptonDiv.appendChild(paragraph);
+    bramptonDiv.appendChild(fileInput);
+    bramptonDiv.appendChild(button);
+
+    container.appendChild(bramptonDiv);
+}
+    }
+
+    if (data === "moorhouse") {
+        const container = document.getElementById("container_upload");
+
+if (!document.getElementById("moorhouseUploadDiv")) {
+    const moorhouseDiv = document.createElement("div");
+    moorhouseDiv.id = "moorhouseUploadDiv";
+    moorhouseDiv.style.paddingLeft = "2rem";
+
+    const paragraph = document.createElement("p");
+    paragraph.textContent = "Moorhouse Noticeboad";
+    paragraph.style.color = '#fff';
+    paragraph.style.fontSize = "25px";
+    paragraph.style.fontFamily = "'Arial', sans-serif";
+
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/png";
+    fileInput.id = "imgUploadMC";
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = "Upload PNG";
+    button.onclick = function() {
+        uploadPngMoorhouseNoticeboard();
+    };
+
+    moorhouseDiv.appendChild(paragraph);
+    moorhouseDiv.appendChild(fileInput);
+    moorhouseDiv.appendChild(button);
+
+    container.appendChild(moorhouseDiv);
+}
+    }
+});
+ 
 
         function uploadPngSharedNoticeboard() {
             const input = document.getElementById('imgUpload');
@@ -141,10 +220,9 @@ pub fn dashboard_page() -> String {
             formData.append('img', file);
             formData.append('type', 'shared_notice_board');
 
-            png_pass_token();
-
             fetch('/api/add_img', {
                 method: "POST",
+                credentials: "include",
                 body: formData 
             })
             .then(response => {
@@ -178,10 +256,9 @@ pub fn dashboard_page() -> String {
             formData.append('img', file);
             formData.append('type', 'brampton_notice_board');
 
-            png_pass_token();
-
             fetch('/api/add_img', {
                 method: "POST",
+                credentials: "include",
                 body: formData 
             })
             .then(response => {
@@ -215,10 +292,9 @@ pub fn dashboard_page() -> String {
             formData.append('img', file);
             formData.append('type', 'moorhouse_notice_board');
 
-            png_pass_token();
-
             fetch('/api/add_img', {
                 method: "POST",
+                credentials: "include",
                 body: formData 
             })
             .then(response => {
@@ -252,10 +328,9 @@ pub fn dashboard_page() -> String {
             formData.append('img', file);
             formData.append('type', 'scotby_notice_board');
 
-            png_pass_token();
-
             fetch('/api/add_img', {
                 method: "POST",
+                credentials: "include",
                 body: formData 
             })
             .then(response => {
@@ -263,7 +338,7 @@ pub fn dashboard_page() -> String {
                     throw new Error('Upload failed');
                 }
                 alert('Upload successful!');
-                window.location.href = '/dashboard';
+                // window.location.href = '/dashboard';
             })
             .catch(error => {
                 alert('Error uploading file.');

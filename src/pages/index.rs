@@ -11,15 +11,9 @@ pub fn index_page() -> String {
         <style>
             body {
                 margin: 0;
-                font-family: "Publicsans", sans-serif;
+                font-family: 'Arial', sans-serif;
                 background-color: #4a6da7;
             }
-
-            @font-face {
-                font-family: "Publicsans";
-                src: url(public/public-sans.ttf);
-            }
-
             .header {
                 padding: 40px;
                 display: flex;
@@ -102,13 +96,6 @@ previewDiv.addEventListener("click", () => {
 fetch('/api/protected_img_fetch', {
     method: 'GET',
     credentials: 'include'
-})
-.then(async response => {
-    const data = await response.json();
-
-    return fetch('/api/fetch', {
-        method: 'POST',
-    });
 })
 .then(async response => await response.json())
 .then(data => {

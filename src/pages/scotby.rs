@@ -11,15 +11,9 @@ pub fn scotby_page() -> String {
         <style>
             body {
                 margin: 0;
-                font-family: "Publicsans", sans-serif;
+                font-family: 'Arial', sans-serif;
                 background-color: #4a6da7;
             }
-
-            @font-face {
-                font-family: "Publicsans";
-                src: url(public/public-sans.ttf);
-            }
-
             .header {
                 padding: 40px;
                 display: flex;
@@ -76,14 +70,7 @@ pub fn scotby_page() -> String {
             }
         });
 
-        fetch('/api/protected_img_fetch', {
-            method: 'GET',
-            credentials: 'include'
-        }).then(async response => {
-            const data = await response.json();
-        });
-
-       const previewDiv = document.createElement("div");
+const previewDiv = document.createElement("div");
 previewDiv.id = "imagePreview";
 previewDiv.style.position = "fixed";
 previewDiv.style.top = "50%";
@@ -107,8 +94,9 @@ previewDiv.addEventListener("click", () => {
     previewDiv.style.display = "none";
 });
 
-fetch('/api/fetch', {
-    method: 'POST',
+fetch('/api/protected_img_fetch', {
+    method: 'GET',
+    credentials: 'include'
 })
 .then(async response => await response.json())
 .then(data => {
@@ -134,12 +122,13 @@ fetch('/api/fetch', {
 
             container.appendChild(img);
         }
-            }); 
-        })
-        .catch(error => {
-            console.error("Fetch error:", error);
-        }); 
-    </script>
+    });
+})
+.catch(error => {
+    console.error("Fetch error:", error);
+});
+
+            </script>
     </html>
    "#.to_string() 
 }
