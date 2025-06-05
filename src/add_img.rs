@@ -1,4 +1,4 @@
-se multipart::server::Multipart;
+use multipart::server::Multipart;
 use rusqlite::params;
 use std::collections::HashMap;
 use std::{
